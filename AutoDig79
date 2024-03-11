@@ -4,7 +4,7 @@ getgenv().autoDigsiteConfig = {
 	BLOCK_BREAK_DELAY = 0.1, -- Amount of time in seconds to wait before breaking a block
 	CHEST_BREAK_DELAY = 0.1, -- Amount of time in seconds to wait before breaking a chest
 
-	ANTI_AFK = true,
+	ANTI_AFK = false,
 	OPTIMIZE_GAME = true, -- Optimize the game by removing unnecessary parts
 	DIGSITE_RESET_DELAY = 15, -- Amount of time in seconds to wait before starting the script back up after the digsite resets
 	LOAD_DELAY = 5, -- How long to wait afterr loading in before starting the script
