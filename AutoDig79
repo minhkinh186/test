@@ -1,5 +1,5 @@
 getgenv().autoDigsiteConfig = {
-    ACCOUNT_POSITIONS = 99,
+    ACCOUNT_POSITIONS = 1,
     DIG_DEPTH = 60, -- How deep to dig in each position
     BLOCK_BREAK_DELAY = 0.1, -- Amount of time in seconds to wait before breaking a block
     CHEST_BREAK_DELAY = 0.1, -- Amount of time in seconds to wait before breaking a chest
@@ -20,6 +20,7 @@ if getgenv().autoDigsiteConfig.ACCOUNT_POSITIONS == 1 then
         [3] = Vector3.new(2, 1, 1),
         [4] = Vector3.new(3, 1, 1),
     }
+--[[
 elseif getgenv().autoDigsiteConfig.ACCOUNT_POSITIONS == 2 then
     positions = {
         [1] = Vector3.new(16, 1, 4),
@@ -712,6 +713,7 @@ elseif getgenv().autoDigsiteConfig.ACCOUNT_POSITIONS == 99 then
         [8] = Vector3.new(3, 1, 9),
         [9] = Vector3.new(3, 1, 14)
     }
+--]]
 end
 
 local function checkForChests()
