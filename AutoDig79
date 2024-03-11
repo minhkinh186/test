@@ -16,14 +16,6 @@ local positions
 if getgenv().autoDigsiteConfig.ACCOUNT_POSITIONS == 1 then
 	positions = {
 		[1] = Vector3.new(1, 1, 2),
-		[2] = Vector3.new(2, 1, 2),
-		[3] = Vector3.new(3, 1, 2),
-		[4] = Vector3.new(4, 1, 2),
-		[5] = Vector3.new(5, 1, 2),
-		[6] = Vector3.new(6, 1, 2),
-		[7] = Vector3.new(7, 1, 2),
-		[8] = Vector3.new(8, 1, 2),
-		[9] = Vector3.new(9, 1, 2),
 	}
 	--[[
 elseif getgenv().autoDigsiteConfig.ACCOUNT_POSITIONS == 2 then
