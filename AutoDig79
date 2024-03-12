@@ -1,3 +1,8 @@
+-- Go to map Dig79
+local n = workspace.__THINGS.Instances.AdvancedDigsite.Teleports.Enter
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = n.CFrame
+task.wait(15)
+
 getgenv().autoDigsiteConfig = {
 	ACCOUNT_POSITIONS = 1,
 	DIG_DEPTH = 60, -- How deep to dig in each position
