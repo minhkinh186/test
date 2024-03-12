@@ -1,7 +1,7 @@
 -- Go to map Dig79
 local n = workspace.__THINGS.Instances.AdvancedDigsite.Teleports.Enter
 game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = n.CFrame
-task.wait(15)
+task.wait(30)
 
 getgenv().autoDigsiteConfig = {
 	ACCOUNT_POSITIONS = 1,
