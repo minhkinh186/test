@@ -1,4 +1,4 @@
---function getgenv()end
+
 
 getgenv().config = {
 	autoWorld = true,
@@ -20,18 +20,7 @@ getgenv().config = {
 	progressNotifs = true,
 	webURL = "",
 }
---[[
 
-
-
-made by @nazov on discord :)
-
-fork if you want just don't 
-resell this script u loser!!
-
-
-
-]]
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
@@ -107,32 +96,6 @@ function getBestEgg(mod, name)
 		end
 	end
 end
-
-function goToBestEggPos()
-	local eggName = getBestEgg(nil, true)
-	local eggTpPlatform
-	local eggPath = workspace.__THINGS.Eggs:FindFirstChild("Main") or workspace.__THINGS.Eggs:FindFirstChild("World2")
-	for i,v in pairs(eggPath:GetChildren()) do
-		local NameSplit = string.split(eggName, " | ")
-		local NumSplit = string.split(v.Name, " - ")
-		if NumSplit[1] == NameSplit[1] then
-			eggTpPlatform = v.PriceFrame.Back
-		end
-	end
-	if eggTpPlatform then
-		HRP.CFrame = eggTpPlatform.CFrame * CFrame.new(0, -2, -10) 
-	end
-end
-
-function checkQuest(id)
-	for i,v in pairs(Info("Goals")) do
-		if v.Type == id then
-			return true
-		end
-	end
-	return false
-end
-
 
 
 local autoOrbConnection = nil
