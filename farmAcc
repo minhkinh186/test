@@ -1,3 +1,5 @@
+--function getgenv()end
+
 getgenv().config = {
 	autoWorld = true,
 
@@ -9,8 +11,8 @@ getgenv().config = {
 	stopAtRank = false,
 	stopAtRankNum = 4,
 
-	autoPetSlots = true,
-	autoClaimMail = true,
+	autoPetSlots = false,
+	autoClaimMail = false,
 
 	desiredPetName = "Frostbyte Husky",
 	needPetNotifs = true,
@@ -270,7 +272,7 @@ spawn(function()
 	end
 end)
 
-while getgenv().config.autoWorld do task.wait()
+--while getgenv().config.autoWorld do task.wait()
 	Close()
 	if getActive() and tostring(getActive()) == "StairwayToHeaven" then
 		firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 1)
@@ -308,4 +310,4 @@ while getgenv().config.autoWorld do task.wait()
 			end
 		end
 	end
-end
+--end
