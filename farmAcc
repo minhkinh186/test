@@ -214,10 +214,6 @@ autoLootBagConnection = workspace.__THINGS.Lootbags.ChildAdded:Connect(function(
 	v:Destroy()
 end)
 
-if not Info("PickedStarterPet") then
-	Library.Network.Invoke("Pick Starter Pets", "Cat", "Dog") task.wait(1)
-	Close() task.wait(1) -- waits to support emulator :Sob:
-end
 
 if Info("FirstLogin") then
 	Close() task.wait(1) -- mhm fuck this game :pepelaugh:
@@ -231,46 +227,6 @@ if getgenv().config.needPetNotifs then
 	end
 	if not found then sendNotif("```diff\n- "..Player.Name.." needs "..tostring(Info("MaxPetsEquipped")).." "..getgenv().config.desiredPetName.."! \n```") end
 end
-
-if getgenv().config.autoClaimMail then
-	spawn(function()
-		while getgenv().config.autoWorld do task.wait(60)
-			local success = Library.Network.Invoke("Mailbox: Claim All")
-			if success and getgenv().config.needPetNotifs then
-				for i,v in pairs(Info("Inventory")["Pet"]) do
-					if v.id == getgenv().config.desiredPetName then
-						sendNotif("```diff\n+ "..Player.Name.." has claimed "..getgenv().config.desiredPetName.." from mail | "..tostring(os.date("%H:%M")).." \n```")
-						break
-					end
-				end
-			end
-		end
-	end)
-end
-
-spawn(function()
-	while getgenv().config.autoWorld do task.wait(30)
-		if rankMod.AllRewardsReady() then 
-			local claimCount = 1
-			while not rankMod.AllRewardsRedeemed() do
-				Library.Network.Fire("Ranks_ClaimReward", claimCount)
-				task.wait(1) claimCount = claimCount + 1
-			end
-		end
-
-		if getgenv().config.stopAtRank then
-			if rankMod.GetMaxRank() and rankMod.GetMaxRank() >= getgenv().config.stopAtRankNum then 
-				getgenv().config.autoRanks = false
-			end
-		end
-
-		if getgenv().config.stopAtRebirth then
-			if rbMod.Get() and rbMod.Get() >= getgenv().config.stopAtRebirthNum then
-				getgenv().config.autoRebirth = false
-			end
-		end
-	end
-end)
 
 --while getgenv().config.autoWorld do task.wait()
 	Close()
@@ -300,14 +256,5 @@ end)
 	local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
 	if purchaseSuccess and getgenv().config.progressNotifs then
 		sendNotif("```diff\n+ "..Player.Name.." has unlocked "..nextTable.ZoneName.." | "..tostring(os.date("%H:%M")).." \n```")	
-	end
-
-	if getgenv().config.autoRebirth then
-		if maxTable.ZoneNumber >= rebirth.ZoneNumberRequired then
-			local rebirthSuccess = Library.Network.Invoke("Rebirth_Request", tostring(rebirth.RebirthNumber))
-			if rebirthSuccess and getgenv().config.rebirthNotifs then
-				sendNotif("```diff\n+ "..Player.Name.." has made it to rebirth "..tostring(rebirth.RebirthNumber).." | "..tostring(os.date("%H:%M")).." \n```")
-			end
-		end
 	end
 --end
