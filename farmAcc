@@ -133,61 +133,7 @@ function checkQuest(id)
 	return false
 end
 
-function completeQuest(goal)
-	if goal.Type == 22 or goal.Type == 27 or goal.Type == 28 or goal.Type == 29 then
-		local obbyName = nil
-		if goal.Type == 22 and Info("UnlockedZones")["Autumn"] then
-			obbyName = "SpawnObby" 
-		elseif goal.Type == 27 and Info("UnlockedZones")["Icy Peaks"] then
-			obbyName = "IceObby" 
-		elseif goal.Type == 28 and Info("UnlockedZones")["Desert Pyramids"] then
-			obbyName = "PyramidObby" 
-		elseif goal.Type == 29 and Info("UnlockedZones")["Jungle Temple"] then
-			obbyName = "JungleObby"
-		end
-		if obbyName then
-			if not getActive() then 
-				firetouchinterest(HRP, Instances[obbyName].Teleports.Enter, 1)
-				firetouchinterest(HRP, Instances[obbyName].Teleports.Enter, 0)	
-				task.wait(1.5) 
-			end
 
-			local Start = nil
-			local Goal = nil 
-
-			if getActive() then
-				for i,v in pairs(getActive():GetDescendants()) do
-					if v.Name == "StartLine" then
-						if v:FindFirstChild("Part") then
-							Start = v.Part
-						else
-							Start = v
-						end
-					elseif v.Name == "Goal" or v.Name == "Finish" then
-						Goal = v
-					end
-				end
-			end
-
-			if Start and Goal then
-				repeat HRP.CFrame = CFrame.new(Start.Position + Vector3.new(0,15,0)) task.wait(1.5) until Player.PlayerGui._INSTANCES.ObbyTimer.Enabled
-				repeat HRP.CFrame = CFrame.new(Goal.Pad.Position + Vector3.new(0,15,0)) task.wait(1.5) until tostring(getActive()) ~= obbyName
-			end
-		end
-
-	elseif goal.Type == 3 or goal.Type == 20 or goal.Type == 42 then
-		local BestEggMod = require(getBestEgg(true, nil)) 
-		if BestEggMod and Library.Balancing.CalcEggPrice(BestEggMod) * goal.Amount <= currencyMod.Get(worldCurrency) then
-			goToBestEggPos()
-			local eggSplit = string.split(getBestEgg(nil, true), " | ")
-			local hatchCount = 1 + Info("EggSlotsPurchased")
-			while checkQuest(goal.Type) do
-				Library.Network.Invoke("Eggs_RequestPurchase", eggSplit[2], hatchCount)
-			end
-		end
-	end
-
-end
 
 local autoOrbConnection = nil
 local autoLootBagConnection = nil
@@ -228,7 +174,7 @@ if getgenv().config.needPetNotifs then
 	if not found then sendNotif("```diff\n- "..Player.Name.." needs "..tostring(Info("MaxPetsEquipped")).." "..getgenv().config.desiredPetName.."! \n```") end
 end
 
---while getgenv().config.autoWorld do task.wait()
+
 	Close()
 	if getActive() and tostring(getActive()) == "StairwayToHeaven" then
 		firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 1)
@@ -242,11 +188,6 @@ end
 		end
 	end
 
-	if getgenv().config.autoRanks then
-		for _,goal in pairs(Info("Goals")) do
-			completeQuest(goal)
-		end
-	end
 
 	local maxName, maxTable = zoneMod.GetMaxOwnedZone()
 	local nextName, nextTable = zoneMod.GetNextZone()
@@ -257,4 +198,4 @@ end
 	if purchaseSuccess and getgenv().config.progressNotifs then
 		sendNotif("```diff\n+ "..Player.Name.." has unlocked "..nextTable.ZoneName.." | "..tostring(os.date("%H:%M")).." \n```")	
 	end
---end
+
