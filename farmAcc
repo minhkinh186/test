@@ -126,7 +126,7 @@ end
 	local nextName, nextTable = zoneMod.GetNextZone()
 	local rebirth = rbMod.GetNextRebirth()
 	teleportToZone(maxTable.ZoneFolder)
-	task.wait(20)
+	task.wait(10)
 
 	local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
 	if purchaseSuccess then
