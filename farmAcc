@@ -87,12 +87,12 @@ if getActive() and tostring(getActive()) == "StairwayToHeaven" then
 end
 
 
-local maxName, maxTable = zoneMod.GetMaxOwnedZone()
-local nextName, nextTable = zoneMod.GetNextZone()
-local rebirth = rbMod.GetNextRebirth()
-teleportToZone(maxTable.ZoneFolder)
-task.wait(10)
 
+local nextName, nextTable = zoneMod.GetNextZone()
 local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
+
+task.wait(10)
 if purchaseSuccess then
+	local maxName, maxTable = zoneMod.GetMaxOwnedZone()
+	teleportToZone(maxTable.ZoneFolder)
 end
