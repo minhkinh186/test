@@ -73,34 +73,6 @@ end
 
 
 
-
-
-local autoOrbConnection = nil
-local autoLootBagConnection = nil
-for i, v in workspace.__THINGS.Orbs:GetChildren() do
-	Library.Network.Fire("Orbs: Collect",{tonumber(v.Name)})
-	Library.Network.Fire("Orbs_ClaimMultiple",{[1]={[1]=v.Name}})
-	task.wait()
-	v:Destroy()
-end
-for i, v in workspace.__THINGS.Lootbags:GetChildren() do
-	Library.Network.Fire("Lootbags_Claim",{v.Name})
-	task.wait()
-	v:Destroy()
-end
-autoOrbConnection = workspace.__THINGS.Orbs.ChildAdded:Connect(function(v)
-	Library.Network.Fire("Orbs: Collect",{tonumber(v.Name)})
-	Library.Network.Fire("Orbs_ClaimMultiple",{[1]={[1]=v.Name}})
-	task.wait()
-	v:Destroy()
-end)
-autoLootBagConnection = workspace.__THINGS.Lootbags.ChildAdded:Connect(function(v)
-	Library.Network.Fire("Lootbags_Claim",{v.Name})
-	task.wait()
-	v:Destroy()
-end)
-
-
 if Info("FirstLogin") then
 	Close() task.wait(1) -- mhm fuck this game :pepelaugh:
 	Library.Network.Fire("Changelog: Read") task.wait(1)
@@ -108,27 +80,19 @@ end
 
 
 
-	Close()
-	if getActive() and tostring(getActive()) == "StairwayToHeaven" then
-		firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 1)
-		firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 0)
-	end
-
-	if getgenv().config.autoPetSlots then
-		if currencyMod.Get("Diamonds") > Library.Balancing.CalcPetSlotPrice(Info("PetSlotsPurchased") + 1) and Info("PetSlotsPurchased") < rankMod.GetMaxPurchasableEquipSlots() and Info("UnlockedZones")["Green Forest"] then
-			teleportToZone(mapUtil.GetZone("Green Forest"))
-			Library.Network.Invoke("EquipSlotsMachine_RequestPurchase", (Info("PetSlotsPurchased") + 1))
-		end
-	end
+Close()
+if getActive() and tostring(getActive()) == "StairwayToHeaven" then
+	firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 1)
+	firetouchinterest(HRP, Instances["StairwayToHeaven"].Teleports.Leave, 0)
+end
 
 
-	local maxName, maxTable = zoneMod.GetMaxOwnedZone()
-	local nextName, nextTable = zoneMod.GetNextZone()
-	local rebirth = rbMod.GetNextRebirth()
-	teleportToZone(maxTable.ZoneFolder)
-	task.wait(10)
+local maxName, maxTable = zoneMod.GetMaxOwnedZone()
+local nextName, nextTable = zoneMod.GetNextZone()
+local rebirth = rbMod.GetNextRebirth()
+teleportToZone(maxTable.ZoneFolder)
+task.wait(10)
 
-	local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
-	if purchaseSuccess then
-	end
-
+local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
+if purchaseSuccess then
+end
