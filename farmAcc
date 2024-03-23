@@ -84,7 +84,7 @@ end
 local nextName, nextTable = zoneMod.GetNextZone()
 local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
 task.wait(10)
-print(purchaseSuccess)
+print(nextName .. ": " .. purchaseSuccess)
 if purchaseSuccess then
 	teleportToZone(nextTable.ZoneFolder)
 end
