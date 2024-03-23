@@ -90,4 +90,5 @@ if purchaseSuccess then
 	teleportToZone(nextTable.ZoneFolder)
 else
 	teleportToZone(maxTable.ZoneFolder)
+	Close()
 end
