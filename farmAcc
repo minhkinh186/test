@@ -84,7 +84,7 @@ local maxName, maxTable = zoneMod.GetMaxOwnedZone()
 local nextName, nextTable = zoneMod.GetNextZone()
 local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
 task.wait(10)
-print(purchaseSuccess)
+print(tostring(purchaseSuccess))
 print(nextName)
 if purchaseSuccess then
 	teleportToZone(nextTable.ZoneFolder)
