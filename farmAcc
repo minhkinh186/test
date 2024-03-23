@@ -87,8 +87,8 @@ task.wait(10)
 print(tostring(purchaseSuccess))
 print(nextName)
 if purchaseSuccess then
+	Close()
 	teleportToZone(nextTable.ZoneFolder)
 else
 	teleportToZone(maxTable.ZoneFolder)
-	Close()
 end
