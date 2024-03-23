@@ -13,18 +13,11 @@ getgenv().config = {
 
 	autoPetSlots = false,
 	autoClaimMail = false,
-
-	desiredPetName = "Frostbyte Husky",
-	needPetNotifs = true,
-	rebirthNotifs = true,
-	progressNotifs = true,
-	webURL = "",
 }
 
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
-local HttpService = game.HttpService
 local RepStor = game.ReplicatedStorage
 local Library = require(RepStor.Library)
 local Player = game.Players.LocalPlayer
@@ -90,9 +83,8 @@ end
 
 local nextName, nextTable = zoneMod.GetNextZone()
 local purchaseSuccess = Library.Network.Invoke("Zones_RequestPurchase", nextTable.ZoneName)
-
 task.wait(10)
+print(purchaseSuccess)
 if purchaseSuccess then
-	local maxName, maxTable = zoneMod.GetMaxOwnedZone()
-	teleportToZone(maxTable.ZoneFolder)
+	teleportToZone(nextTable.ZoneFolder)
 end
