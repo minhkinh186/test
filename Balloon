@@ -185,28 +185,13 @@ autoLootBagConnection = workspace.__THINGS.Lootbags.ChildAdded:Connect(function(
 end)
 
 
--- Mới vào game nếu ko thấy bóng thì mở hộp quà, đợi 9 phút, check lại lần nữa, vẫn ko thấy bóng thày HOP SERVER
+-- Mới vào game nếu ko thấy bóng thì (mở hộp quà,) đợi 9 phút, check lại lần nữa, vẫn ko thấy bóng thày HOP SERVER
 if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
-	_G.autoOpen = true
-	_G.openDelay = 1
-
-	local Network = game.ReplicatedStorage.Network
-	local Items = {"Gift Bag", "Large Gift Bag", "Charm Stone"}
-
-	function autoOpen(name)
-		Network.GiftBag_Open:InvokeServer(name)
-	end
-
-	while _G.autoOpen do task.wait(_G.openDelay)
-		for i,v in pairs(Items) do
-			autoOpen(v)
-		end
-	end
+	
 	print("SV ko co bong, đợi 500s")
 	task.wait(500)
 	if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 		repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
-		
 	end
 end
 
@@ -231,12 +216,15 @@ while getgenv().MoneyPrinter.autoBalloons do task.wait()
 				end
 			end
 			Time = 0
-		else -- Ko có bóng thì tăng biến đếm lần lên, nếu liên tục X lần ko bóng thì HOP SV
-			Time = Time + 1
-			print("Time: " .. Time)
-			task.wait(60)
+			print(Time)
 		end
 	end
+	
+	task.wait(10)
+	
+	Time =Time + 1
+	print("Time: " .. Time)
+	
 	if getgenv().MoneyPrinter.serverHopper then
 		if Time >= getgenv().MoneyPrinter.minServerTime then
 			repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
