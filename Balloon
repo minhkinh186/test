@@ -123,8 +123,7 @@ if game:IsLoaded() and getgenv().MoneyPrinter.maybeCPUReducer then
 end	
 
 
-local RunService = game:GetService("RunService")
-local HttpService = game:GetService("HttpService")
+
 local Player = game:GetService("Players").LocalPlayer
 local RepStor = game:GetService("ReplicatedStorage")
 local Library = require(RepStor.Library)
@@ -203,7 +202,7 @@ if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 			autoOpen(v)
 		end
 	end
-	
+	print("SV ko co bong, đợi 500s")
 	task.wait(500)
 	if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 		repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
@@ -227,14 +226,14 @@ while getgenv().MoneyPrinter.autoBalloons do task.wait()
 					Library.Network.Fire("Breakables_PlayerDealDamage", breakableId)
 				elseif not Balloon.Popped then
 					HRP.CFrame = CFrame.new(Balloon.Position + Vector3.new(0,30,0))
-					Slingshot.fireWeapon()  -- Bắn bóng
-					Library.Network.Fire("BalloonGifts_BalloonHit", Balloon.Id)
+					Slingshot.fireWeapon()  
+					Library.Network.Fire("BalloonGifts_BalloonHit", Balloon.Id) -- Bắn bóng
 				end
 			end
 			Time = 0
 		else -- Ko có bóng thì tăng biến đếm lần lên, nếu liên tục X lần ko bóng thì HOP SV
 			Time = Time + 1
-			print(Time)
+			print("Time: " .. Time)
 			task.wait(60)
 		end
 	end
