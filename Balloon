@@ -1,4 +1,16 @@
+getgenv().MoneyPrinter = {
+	toolName = "Slingshot",
+	autoBalloons = true,
+	autoPresents = true,
 
+	serverHopper = true,
+	minServerTime = 6, -- Nếu LIÊN TIẾP không thấy bóng thì HOP_SV, mỗi lần cách nhau 1 phút
+
+
+	maybeCPUReducer = true,
+}
+
+-------------------------
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
@@ -229,6 +241,7 @@ while getgenv().MoneyPrinter.autoBalloons do task.wait()
 			Time = 0
 		else -- Ko có bóng thì tăng biến đếm lần lên, nếu liên tục X lần ko bóng thì HOP SV
 			Time = Time + 1
+			print(Time)
 			task.wait(60)
 		end
 	end
