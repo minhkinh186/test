@@ -1,4 +1,16 @@
+getgenv().MoneyPrinter = {
+	toolName = "Slingshot",
+	autoBalloons = true,
+	autoPresents = true,
 
+	serverHopper = true,
+	minServerTime = 6, -- Nếu LIÊN TIẾP không thấy bóng thì HOP_SV, mỗi lần cách nhau 1 phút
+
+
+	maybeCPUReducer = true,
+}
+
+-------------------------
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
@@ -122,7 +134,8 @@ if game:IsLoaded() and getgenv().MoneyPrinter.maybeCPUReducer then
 	end
 	setfpscap(8)
 end	
-local LargeRAP = 11000; local SmallRAP = 2800
+
+
 local RunService = game:GetService("RunService")
 local HttpService = game:GetService("HttpService")
 local Player = game:GetService("Players").LocalPlayer
@@ -184,23 +197,27 @@ autoLootBagConnection = workspace.__THINGS.Lootbags.ChildAdded:Connect(function(
 	task.wait()
 	v:Destroy()
 end)
-local startBalloons = #workspace.__THINGS.BalloonGifts:GetChildren()
 
--- Mới vào game nếu ko thấy bóng thì mở hộp quà, đợi phút, check lại lần nữa, vẫn ko thấy bóng thày HOP SERVER
+
+-- Mới vào game nếu ko thấy bóng thì mở hộp quà, đợi 9 phút, check lại lần nữa, vẫn ko thấy bóng thày HOP SERVER
 if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 	_G.autoOpen = true
 	_G.openDelay = 1
+
+	local Network = game.ReplicatedStorage.Network
 	local Items = {"Gift Bag", "Large Gift Bag", "Charm Stone"}
+
 	function autoOpen(name)
-		Library.GiftBag_Open:InvokeServer(name)
+		Network.GiftBag_Open:InvokeServer(name)
 	end
+
 	while _G.autoOpen do task.wait(_G.openDelay)
 		for i,v in pairs(Items) do
 			autoOpen(v)
 		end
 	end
 	
-	task.wait(600)
+	task.wait(500)
 	if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 		repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
 		
@@ -208,21 +225,22 @@ if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 end
 
 
-local Time = 0
+local Time = 0 -- Đếm số lần quét Không có bóng
 while getgenv().MoneyPrinter.autoBalloons do task.wait()
 	if getgenv().MoneyPrinter.autoPresents then getPresents() end -- Nhặt hộp
 	for _,Balloon in pairs(Library.Network.Invoke("BalloonGifts_GetActiveBalloons")) do task.wait(0.03)
 		if Balloon.Id then -- Có bóng thì thực hiện:
 			while Library.Network.Invoke("BalloonGifts_GetActiveBalloons")[Balloon.Id] do task.wait(0.03)
 				if not getTool() then equipTool(getgenv().MoneyPrinter.toolName) end -- Trang bị Ná (Slingshot)
+				
 				local breakableId = getBalloonUID(getCurrentZone())
 				if breakableId == "Skip" then break end
 				if breakableId then
-					HRP.CFrame = CFrame.new(Balloon.LandPosition)
+					HRP.CFrame = CFrame.new(Balloon.LandPosition) -- Bay đến map có bóng
 					Library.Network.Fire("Breakables_PlayerDealDamage", breakableId)
 				elseif not Balloon.Popped then
 					HRP.CFrame = CFrame.new(Balloon.Position + Vector3.new(0,30,0))
-					Slingshot.fireWeapon()
+					Slingshot.fireWeapon()  -- Bắn bóng
 					Library.Network.Fire("BalloonGifts_BalloonHit", Balloon.Id)
 				end
 			end
