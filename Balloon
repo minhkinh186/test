@@ -5,10 +5,8 @@ getgenv().MoneyPrinter = {
 
 	serverHopper = false,
 	avoidCooldown = false,
-	minServerTime = 900, -- Avoid 268 if multi-accounting : Force stay in server for x time even if no Balloons
+	minServerTime = 6, -- Nếu LIÊN TIẾP không thấy bóng thì HOP_SV, mỗi lần cách nhau 1 phút
 
-	sendWeb = true,
-	webURL = "",
 
 	maybeCPUReducer = true,
 }
@@ -17,7 +15,6 @@ getgenv().MoneyPrinter = {
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
-
 if game:IsLoaded() and getgenv().MoneyPrinter.maybeCPUReducer then
 	pcall(function()
 		for _, v in pairs(game:GetService("Workspace"):FindFirstChild("__THINGS"):GetChildren()) do
@@ -224,13 +221,13 @@ if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 end
 
 
+local Time = 0
 while getgenv().MoneyPrinter.autoBalloons do task.wait()
-	local startTime = os.time()
 	if getgenv().MoneyPrinter.autoPresents then getPresents() end -- Nhặt hộp
 	for _,Balloon in pairs(Library.Network.Invoke("BalloonGifts_GetActiveBalloons")) do task.wait(0.03)
-		if Balloon.Id then
+		if Balloon.Id then -- Có bóng thì thực hiện:
 			while Library.Network.Invoke("BalloonGifts_GetActiveBalloons")[Balloon.Id] do task.wait(0.03)
-				if not getTool() then equipTool(getgenv().MoneyPrinter.toolName) end
+				if not getTool() then equipTool(getgenv().MoneyPrinter.toolName) end -- Trang bị Ná (Slingshot)
 				local breakableId = getBalloonUID(getCurrentZone())
 				if breakableId == "Skip" then break end
 				if breakableId then
@@ -242,21 +239,14 @@ while getgenv().MoneyPrinter.autoBalloons do task.wait()
 					Library.Network.Fire("BalloonGifts_BalloonHit", Balloon.Id)
 				end
 			end
+			Time = 0
+		else -- Ko có bóng thì tăng biến đếm lần lên, nếu liên tục X lần ko bóng thì HOP SV
+			Time = Time + 1
+			task.wait(60)
 		end
 	end
-	local currentTime = os.time()
 	if getgenv().MoneyPrinter.serverHopper then
-		if not getgenv().MoneyPrinter.avoidCooldown or (getgenv().MoneyPrinter.avoidCooldown and currentTime - startTime >= getgenv().MoneyPrinter.minServerTime) then
-			local endGifts = 0
-			local endLarge = 0 
-			for i,v in pairs(getInfo("Inventory").Misc) do
-				if endGifts ~= 0 and endLarge ~= 0 then break end
-				if v.id == "Gift Bag" then
-					endGifts = (v._am or 1)
-				elseif v.id == "Large Gift Bag" then
-					endLarge = (v._am or 1)
-				end
-			end
+		if Time >= getgenv().MoneyPrinter.minServerTime then
 			repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
 		end
 	end
