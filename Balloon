@@ -17,6 +17,7 @@ getgenv().MoneyPrinter = {
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
 repeat task.wait(1) until not game.Players.LocalPlayer.PlayerGui:FindFirstChild("__INTRO")
+
 if game:IsLoaded() and getgenv().MoneyPrinter.maybeCPUReducer then
 	pcall(function()
 		for _, v in pairs(game:GetService("Workspace"):FindFirstChild("__THINGS"):GetChildren()) do
@@ -174,21 +175,6 @@ function getPresents() for i,v in pairs(Library.Save.Get().HiddenPresents) do
 		end 
 	end 
 end
-function getTotalRAP(num)
-	local suffixes = {"", "k", "m", "b"}
-	local suffixInd = 1
-	while num >= 1000 and suffixInd < #suffixes do
-		num = num / 1000
-		suffixInd = suffixInd + 1
-	end
-	local formattedNum
-	if num % 1 == 0 then
-		formattedNum = string.format("%d", num)
-	else
-		formattedNum = string.format("%.1f", num):gsub("%.?0+$", "")
-	end
-	return formattedNum .. suffixes[suffixInd]
-end
 -- AUTO ORB
 local autoOrbConnection = nil
 local autoLootBagConnection = nil
@@ -237,18 +223,9 @@ if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 	end
 end
 
-local startGifts = 0
-local startLarge = 0
-for i,v in pairs(getInfo("Inventory").Misc) do
-	if startGifts ~= 0 and startLarge ~= 0 then break end
-	if v.id == "Gift Bag" then
-		startGifts = (v._am or 1)
-	elseif v.id == "Large Gift Bag" then
-		startLarge = (v._am or 1)
-	end
-end
-local startTime = os.time()
+
 while getgenv().MoneyPrinter.autoBalloons do task.wait()
+	local startTime = os.time()
 	if getgenv().MoneyPrinter.autoPresents then getPresents() end -- Nhặt hộp
 	for _,Balloon in pairs(Library.Network.Invoke("BalloonGifts_GetActiveBalloons")) do task.wait(0.03)
 		if Balloon.Id then
