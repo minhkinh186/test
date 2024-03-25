@@ -3,8 +3,7 @@ getgenv().MoneyPrinter = {
 	autoBalloons = true,
 	autoPresents = true,
 
-	serverHopper = false,
-	avoidCooldown = false,
+	serverHopper = true,
 	minServerTime = 6, -- Nếu LIÊN TIẾP không thấy bóng thì HOP_SV, mỗi lần cách nhau 1 phút
 
 
