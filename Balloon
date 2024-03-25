@@ -1,15 +1,3 @@
-getgenv().MoneyPrinter = {
-	toolName = "Slingshot",
-	autoBalloons = true,
-	autoPresents = true,
-
-	serverHopper = true,
-	minServerTime = 6, -- Nếu LIÊN TIẾP không thấy bóng thì HOP_SV, mỗi lần cách nhau 1 phút
-
-
-	maybeCPUReducer = true,
-}
-
 
 repeat task.wait(1) until game.PlaceId ~= nil
 repeat task.wait(1) until game:GetService("Players") and game:GetService("Players").LocalPlayer
