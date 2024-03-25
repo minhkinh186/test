@@ -188,8 +188,8 @@ end)
 -- Mới vào game nếu ko thấy bóng thì (mở hộp quà,) đợi 9 phút, check lại lần nữa, vẫn ko thấy bóng thày HOP SERVER
 if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 	
-	print("SV ko co bong, đợi 500s")
-	task.wait(500)
+	print("SV ko co bong, đợi 10s")
+	task.wait(10)
 	if #workspace.__THINGS.BalloonGifts:GetChildren() <= 1 then
 		repeat game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, getServer().id, Player) task.wait(3) until not game.PlaceId
 	end
